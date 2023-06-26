@@ -9,7 +9,7 @@
 <body>
 
 	<%
-		out.write("안녕하세Dydydy");
+		out.write("text");
 	%>
 
 </body>
