@@ -74,10 +74,22 @@ public class Api {
 	}
 
 	public static void main(String[] args) throws Exception {
-		List<Wifi> wifiList = sendGet(1, 2);
+		List<Wifi> wifiList = sendGet(1, 1);
+		int count = Api.result;
+		System.out.println(count);
 		for (Wifi w : wifiList) {
 			System.out.println(w.getManagerNumber());
 			System.out.println(w.getWardOffice());
+		}
+		
+		int totalCount = count;
+		int batchSize = 1000;
+
+		for (int start = 1; start <= totalCount; start += batchSize) {
+		    int end = Math.min(start + batchSize - 1, totalCount);
+		    
+		    System.out.println(start + ", " + end);
+		    // 여기에 원하는 작업을 수행합니다.
 		}
 	}
 }

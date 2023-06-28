@@ -1,6 +1,9 @@
 package model;
 
 public class Wifi {
+	private int wifiId;
+	private int locationId;
+	private String distance;
 	private String managerNumber;
 	private String wardOffice;
 	private String mainName;
@@ -145,5 +148,29 @@ public class Wifi {
 
 	public void setWorkDateTime(String workDateTime) {
 		this.workDateTime = workDateTime;
+	}
+
+	public int getWifiId() {
+		return wifiId;
+	}
+
+	public void setWifiId(int wifiId) {
+		this.wifiId = wifiId;
+	}
+
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getDistance() {
+		return distance;
+	}
+
+	public void setDistance(String distance) {
+		this.distance = distance;
 	}
 }
