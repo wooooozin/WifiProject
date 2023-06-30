@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Open API 와이파이 정보 가져오기</title>
 <style type="text/css">
 .top_elements {
 	padding: 15px 0;

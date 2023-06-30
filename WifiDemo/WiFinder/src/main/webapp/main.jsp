@@ -59,7 +59,7 @@
 <body>
 	<h1>와이파이 정보 구하기</h1>
 	<div class="top_buttons">
-		<a href="#none">홈</a> | <a href="#none">위치 히스토리 목록</a> | 
+		<a href="main.jsp">홈</a> | <a href="#none">위치 히스토리 목록</a> | 
 		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 	</div>
 	<div class="input_fields">
