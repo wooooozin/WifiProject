@@ -89,4 +89,59 @@ public class WifiService {
         	
         }
 	}
+	
+	public static void updateDistance(double latitude, double longitude) {
+	    try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+
+	        String sql = "UPDATE wifi_info SET distance = SQRT(POW(69.1 * (lat - ?), 2) + POW(69.1 * (? - lnt) * COS(lat / 57.3), 2))";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement.setDouble(1, latitude);
+	        preparedStatement.setDouble(2, longitude);
+
+	        int affectedRows = preparedStatement.executeUpdate();
+	        System.out.println("업데이트된 거리 정보 수: " + affectedRows);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	}
+
 }
