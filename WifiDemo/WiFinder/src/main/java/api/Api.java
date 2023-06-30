@@ -91,7 +91,6 @@ public class Api {
 				Gson gson = new Gson();
 				String jsonResponse = response.toString();
 				tbPublicWifiInfo = gson.fromJson(jsonResponse, PublicWifiInfo.class);
-				System.out.println(tbPublicWifiInfo.getTbPublicWifiInfo().getRow());
 			} else {
 				System.out.println("HTTP 요청이 실패했습니다. 상태 코드: " + statusCode);
 			}
@@ -101,15 +100,5 @@ public class Api {
 			httpClient.close();
 		}
 		return tbPublicWifiInfo;
-	}
-
-	public static void main(String[] args) throws Exception {
-		int count = Api.getTotalCount();
-		System.out.println(count + "count");
-		PublicWifiInfo sInfo = Api.getWifiInfo(100, 300);
-		List<Row> list = sInfo.getTbPublicWifiInfo().getRow();
-		for (Row row : list) {
-			System.out.println(row.getX_SWIFI_ADRES1());
-		}
 	}
 }
