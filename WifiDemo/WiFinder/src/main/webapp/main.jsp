@@ -55,23 +55,31 @@
 	border: 1px solid lightgray;
 }
 </style>
+<script src="js/find-location.js"></script>
 </head>
+
+
 <body>
 	<h1>와이파이 정보 구하기</h1>
+	
 	<div class="top_buttons">
-		<a href="main.jsp">홈</a> | <a href="#none">위치 히스토리 목록</a> | 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
+		<a href="main.jsp">홈</a> | <a href="#none">위치 히스토리 목록</a> | <a
+			href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 	</div>
+	
 	<div class="input_fields">
 		<div class="input_item">
-			<label for="latFiedl">LAT: </label> <input type="text" id="latFiedl">
+			<label for="latField">LAT: </label> <input type="text" id="latField">
 		</div>
 		<span>,</span>
 		<div class="input_item">
-			<label for="lntFiedl">LNT: </label> <input type="text" id="lntFiedl">
+			<label for="lntField">LNT: </label> <input type="text" id="lntField">
 		</div>
-		<button type="button">내 위치 가져오기</button>
-		<button type="button">근처 WIFI 정보보기</button>
+		
+		<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
+		
+		<button type="button" onclick="">근처 WIFI 정보보기</button>
+		
 	</div>
 
 	<table id="wifi_table">
