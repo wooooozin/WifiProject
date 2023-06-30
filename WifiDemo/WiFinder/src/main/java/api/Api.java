@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.hc.client5.http.ClientProtocolException;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -16,16 +17,18 @@ import com.google.gson.Gson;
 
 import model.PublicWifiInfo;
 import model.PublicWifiInfo.Row;
+import model.PublicWifiInfo.TbPublicWifiInfo;
 import model.Wifi;
 
 public class Api {
 
 	private static final String KEY = "74664261736f6f393731714449467a";
 	private static final String BASE_URL = "http://openapi.seoul.go.kr:8088/" + KEY + "/json/TbPublicWifiInfo/";
-	private static List<Wifi> wifiList;
-	public static int result = 0;
+	private static int count = 0;
 
-	public static List<Wifi> sendGet(int start, int end) throws ClientProtocolException, IOException {
+	public static int getTotalCount() throws ClientProtocolException, IOException {
+		int start = 1;
+		int end = 1;
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet(BASE_URL + start + "/" + end);
 
@@ -44,24 +47,13 @@ public class Api {
 				while ((inputLine = reader.readLine()) != null) {
 					response.append(inputLine).append(System.lineSeparator());
 				}
-
+				
 				reader.close();
-
+				
 				Gson gson = new Gson();
 				String jsonResponse = response.toString();
 				PublicWifiInfo tbPublicWifiInfo = gson.fromJson(jsonResponse, PublicWifiInfo.class);
-				result = tbPublicWifiInfo.getTbPublicWifiInfo().getList_total_count();
-
-				wifiList = new ArrayList<>();
-
-				for (Row row : tbPublicWifiInfo.getTbPublicWifiInfo().getRow()) {
-					Wifi wifi = new Wifi();
-					wifi.setManagerNumber(row.getX_SWIFI_MGR_NO());
-					wifi.setWardOffice(row.getX_SWIFI_WRDOFC());
-					wifiList.add(wifi);
-				}
-
-				System.out.println(result);
+				count = tbPublicWifiInfo.getTbPublicWifiInfo().getList_total_count();
 			} else {
 				System.out.println("HTTP 요청이 실패했습니다. 상태 코드: " + statusCode);
 			}
@@ -70,26 +62,54 @@ public class Api {
 		} finally {
 			httpClient.close();
 		}
-		return wifiList;
+		return count;
+	}
+	
+	public static PublicWifiInfo getWifiInfo(int start, int end) throws ClientProtocolException, IOException {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(BASE_URL + start + "/" + end);
+		PublicWifiInfo tbPublicWifiInfo = new PublicWifiInfo();
+
+		try (CloseableHttpResponse httpResponse = httpClient.execute(httpGet)) {
+			int statusCode = httpResponse.getCode();
+			System.out.println(statusCode);
+			if (statusCode >= 200 && statusCode < 300) {
+
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(httpResponse.getEntity().getContent())
+				);
+
+				String inputLine;
+				StringBuilder response = new StringBuilder();
+
+				while ((inputLine = reader.readLine()) != null) {
+					response.append(inputLine).append(System.lineSeparator());
+				}
+				
+				reader.close();
+				
+				Gson gson = new Gson();
+				String jsonResponse = response.toString();
+				tbPublicWifiInfo = gson.fromJson(jsonResponse, PublicWifiInfo.class);
+				System.out.println(tbPublicWifiInfo.getTbPublicWifiInfo().getRow());
+			} else {
+				System.out.println("HTTP 요청이 실패했습니다. 상태 코드: " + statusCode);
+			}
+		} catch (UnsupportedOperationException e) {
+			e.printStackTrace();
+		} finally {
+			httpClient.close();
+		}
+		return tbPublicWifiInfo;
 	}
 
 	public static void main(String[] args) throws Exception {
-		List<Wifi> wifiList = sendGet(1, 1);
-		int count = Api.result;
-		System.out.println(count);
-		for (Wifi w : wifiList) {
-			System.out.println(w.getManagerNumber());
-			System.out.println(w.getWardOffice());
-		}
-		
-		int totalCount = count;
-		int batchSize = 1000;
-
-		for (int start = 1; start <= totalCount; start += batchSize) {
-		    int end = Math.min(start + batchSize - 1, totalCount);
-		    
-		    System.out.println(start + ", " + end);
-		    // 여기에 원하는 작업을 수행합니다.
+		int count = Api.getTotalCount();
+		System.out.println(count + "count");
+		PublicWifiInfo sInfo = Api.getWifiInfo(100, 300);
+		List<Row> list = sInfo.getTbPublicWifiInfo().getRow();
+		for (Row row : list) {
+			System.out.println(row.getX_SWIFI_ADRES1());
 		}
 	}
 }
