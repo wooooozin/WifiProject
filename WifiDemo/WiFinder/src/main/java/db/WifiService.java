@@ -107,7 +107,9 @@ public class WifiService {
 	            throw new SQLException("Failed to establish a database connection.");
 	        }
 
-	        String sql = "UPDATE wifi_info SET distance = SQRT(POW(69.1 * (lat - ?), 2) + POW(69.1 * (? - lnt) * COS(lat / 57.3), 2))";
+	        String sql = "UPDATE wifi_info "
+	        		+ " SET distance = SQRT(POW(69.1 * (lat - ?), 2) + POW(69.1 * (? - lnt) * COS(lat / 57.3), 2)) "
+	        		+ " WHERE  ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        preparedStatement.setDouble(1, latitude);
