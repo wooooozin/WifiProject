@@ -24,7 +24,7 @@ public class Api {
 
 	private static final String KEY = "74664261736f6f393731714449467a";
 	private static final String BASE_URL = "http://openapi.seoul.go.kr:8088/" + KEY + "/json/TbPublicWifiInfo/";
-	private static int count = 0;
+	public static int count = 0;
 
 	public static int getTotalCount() throws ClientProtocolException, IOException {
 		int start = 1;

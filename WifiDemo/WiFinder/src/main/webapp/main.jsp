@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="db.WifiService"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,12 +63,12 @@
 
 <body>
 	<h1>와이파이 정보 구하기</h1>
-	
+
 	<div class="top_buttons">
-		<a href="main.jsp">홈</a> | <a href="#none">위치 히스토리 목록</a> | <a
-			href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
+		<a href="main.jsp">홈</a> | <a href="location-history.jsp">위치 히스토리 목록</a>
+		| <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 	</div>
-	
+
 	<div class="input_fields">
 		<div class="input_item">
 			<label for="latField">LAT: </label> <input type="text" id="latField">
@@ -75,11 +77,11 @@
 		<div class="input_item">
 			<label for="lntField">LNT: </label> <input type="text" id="lntField">
 		</div>
-		
+
 		<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-		
+
 		<button type="button" onclick="">근처 WIFI 정보보기</button>
-		
+
 	</div>
 
 	<table id="wifi_table">
@@ -106,10 +108,22 @@
 		</thead>
 
 		<tbody>
+			<%
+			if (WifiService.hasData()) {
+			%>
 			<tr>
-				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해
-					주세요.</td>
+				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해 주세요.</td>
 			</tr>
+			<%
+			} else {
+			%>
+			<tr>
+				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를 가져온 후 조회해 주세요.</td>
+			</tr>
+			<%
+			}
+			%>
+
 		</tbody>
 	</table>
 

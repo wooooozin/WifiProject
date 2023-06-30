@@ -145,5 +145,64 @@ public class WifiService {
 	        }
 	    }
 	}
+	
+	public static boolean hasData() {
+	    try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
 
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+	    boolean hasData = false;
+
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+
+	        String sql = "SELECT COUNT(*) FROM wifi_info";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        rs = preparedStatement.executeQuery();
+
+	        if (rs.next()) {
+	            int count = rs.getInt(1);
+	            if (count > 0) {
+	                hasData = true;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+
+	    return hasData;
+	}
 }
