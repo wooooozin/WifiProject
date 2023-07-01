@@ -45,9 +45,7 @@
 	    
 		PublicWifiInfo wifiInfo = Api.getWifiInfo(start, end);
 		List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
-		for (Row data : infoList) {
-			WifiService.insertWifiInfo(data);
-		}
+		WifiService.insertWifiInfo(infoList);
 	}
 	%>
 
