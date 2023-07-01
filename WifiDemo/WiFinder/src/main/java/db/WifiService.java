@@ -25,7 +25,7 @@ public class WifiService {
 	    Connection connection = null;
 	    PreparedStatement preparedStatement = null;
 	    
-	    try {
+	    try { 
 	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 	        if (connection == null) {
 	            throw new SQLException("Failed to establish a database connection.");
@@ -33,9 +33,9 @@ public class WifiService {
 	        
 	        StringBuilder sqlBuilder = new StringBuilder();
 	        sqlBuilder.append("INSERT INTO wifi_info ");
-	        sqlBuilder.append("(mgr_no, wrdofc, main_nm, adress1, adress2, instl_floor, instl_ty, ");
+	        sqlBuilder.append("(distance, mgr_no, wrdofc, main_nm, adress1, adress2, instl_floor, instl_ty, ");
 	        sqlBuilder.append("instl_mby, svc_se, cmcwr, cnstc_year, inout_door, remars3, lat, lnt, work_dttm) ");
-	        sqlBuilder.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+	        sqlBuilder.append("VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 	        sqlBuilder.append("ON DUPLICATE KEY UPDATE mgr_no = mgr_no");
 	        
 	        preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -85,9 +85,8 @@ public class WifiService {
 	        }
 	    }
 	}
-
 	
-	public static void updateDistance(double latitude, double longitude) {
+	public static void updateDistance(String latitude, String longitude, List<Row> dataList) {
 	    try {
 	        Class.forName("org.mariadb.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {
@@ -106,12 +105,20 @@ public class WifiService {
 
 	        String sql = "UPDATE wifi_info "
 	        		+ " SET distance = SQRT(POW(69.1 * (lat - ?), 2) + POW(69.1 * (? - lnt) * COS(lat / 57.3), 2)) "
-	        		+ " WHERE  ";
+	        		+ " WHERE mgr_no = ? ";
 
 	        preparedStatement = connection.prepareStatement(sql);
-	        preparedStatement.setDouble(1, latitude);
-	        preparedStatement.setDouble(2, longitude);
-
+	        for (Row data : dataList) {
+	            double lat = Double.parseDouble(latitude);
+	            double lnt = Double.parseDouble(longitude);
+	            
+	            preparedStatement.setDouble(1, lat);
+	            preparedStatement.setDouble(2, lnt);
+	            preparedStatement.setString(3, data.getX_SWIFI_MGR_NO());
+	            
+	            preparedStatement.addBatch();
+	        }
+	        System.out.println(dataList.size());
 	        int affectedRows = preparedStatement.executeUpdate();
 	        System.out.println("업데이트된 거리 정보 수: " + affectedRows);
 	    } catch (SQLException e) {
@@ -201,5 +208,9 @@ public class WifiService {
 	    }
 
 	    return hasData;
+	}
+	
+	public static void main(String[] args) {
+
 	}
 }

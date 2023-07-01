@@ -1,15 +1,17 @@
 package model;
 
 public class Location {
-	private int locationId;
+	private String locationId;
 	private String latitude;
 	private String longitude;
+	private String confirmDate;
+
 	
-	public int getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 	
-	public void setLocationId(int locationId) {
+	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
 	
@@ -35,9 +37,6 @@ public class Location {
 	
 	public void setConfirmDate(String confirmDate) {
 		this.confirmDate = confirmDate;
-	}
-	
-	private String confirmDate;
-	
+	}	
 
 }

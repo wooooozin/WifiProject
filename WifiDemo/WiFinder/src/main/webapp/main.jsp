@@ -1,6 +1,15 @@
+<%@page import="api.Api"%>
+<%@page import="db.LocationSerivce"%>
+<%@page import="model.PublicWifiInfo"%>
+<%@page import="model.PublicWifiInfo.Row"%>
+<%@ page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="db.WifiService"%>
+<%@ page import="db.WifiService"%>
+<%@ page import="db.LocationSerivce"%>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -65,24 +74,46 @@
 	<h1>와이파이 정보 구하기</h1>
 
 	<div class="top_buttons">
-		<a href="main.jsp">홈</a> | <a href="location-history.jsp">위치 히스토리 목록</a>
-		| <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
+		<a href="main.jsp">홈</a> | <a href="location-history.jsp">위치 히스토리
+			목록</a> | <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 	</div>
+	<form action="main.jsp" method="post">
+		<div class="input_fields">
+			<div class="input_item">
+				LAT : <input type="text" id="latField" name ="latField">
+			</div>
+			<span>,</span>
+			<div class="input_item">
+				LNT : <input type="text" id="lntField" name ="lntField">
+			</div>
 
-	<div class="input_fields">
-		<div class="input_item">
-			<label for="latField">LAT: </label> <input type="text" id="latField">
+			<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
+
+			<button type="submit">근처 WIFI 정보보기</button>
+
 		</div>
-		<span>,</span>
-		<div class="input_item">
-			<label for="lntField">LNT: </label> <input type="text" id="lntField">
-		</div>
-
-		<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-
-		<button type="button" onclick="">근처 WIFI 정보보기</button>
-
-	</div>
+	</form>
+	
+	<%
+	request.setCharacterEncoding("UTF-8");
+	String lat = request.getParameter("latField");
+	String lnt = request.getParameter("lntField");
+	if (lat != null && lnt != null) {
+		LocationSerivce.insertLocationInfo(lat, lnt);
+		int totalCount = Api.getTotalCount();
+		int batchSize = 1000;
+		for (int start = 1; start <= totalCount; start += batchSize) {
+		    int end = Math.min(start + batchSize - 1, totalCount);
+		    
+			PublicWifiInfo wifiInfo = Api.getWifiInfo(start, end);
+			List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
+			WifiService.updateDistance(lat, lnt, infoList);
+		}
+		
+	}
+	System.out.println(lat);
+	System.out.println(lnt);
+	%>
 
 	<table id="wifi_table">
 		<thead>
@@ -112,13 +143,15 @@
 			if (WifiService.hasData()) {
 			%>
 			<tr>
-				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해 주세요.</td>
+				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해
+					주세요.</td>
 			</tr>
 			<%
 			} else {
 			%>
 			<tr>
-				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를 가져온 후 조회해 주세요.</td>
+				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를
+					가져온 후 조회해 주세요.</td>
 			</tr>
 			<%
 			}
