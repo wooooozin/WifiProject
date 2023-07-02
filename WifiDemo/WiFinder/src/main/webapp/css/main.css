@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
-.form_main .input_fields {
-	margin-top: 15px;
-	margin-bottom: 15px;
+.form_main {
+	margin: 15px 0;
 }
 
 
