@@ -2,7 +2,8 @@
 <%@page import="db.LocationSerivce"%>
 <%@page import="model.PublicWifiInfo"%>
 <%@page import="model.PublicWifiInfo.Row"%>
-<%@ page import="java.util.List" %>
+<%@page import="model.Wifi"%>
+<%@ page import="java.util.List"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -10,90 +11,41 @@
 <%@ page import="db.LocationSerivce"%>
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>와이파이 정보 구하기</title>
-<style type="text/css">
-.input_fields {
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-.input_fields .input_item {
-	display: inline-block;
-}
-
-.input_fields .input_item+.input_item {
-	margin-left: 6px;
-}
-
-#wifi_table {
-	font-family: Arial, Helvetica, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
-}
-
-#wifi_table td, #customers th {
-	border: 1px solid #ddd;
-	padding: 8px;
-}
-
-#wifi_table tr:nth-child(even) {
-	background-color: #f2f2f2;
-}
-
-#wifi_table tr:hover {
-	background-color: #ddd;
-}
-
-#wifi_table th {
-	padding-top: 12px;
-	padding-bottom: 12px;
-	text-align: center;
-	background-color: #04AA6D;
-	color: white;
-	border: 1px solid white;
-}
-
-#wifi_table td {
-	padding-top: 12px;
-	padding-bottom: 12px;
-	text-align: left;
-	color: black;
-	border: 1px solid lightgray;
-}
-</style>
+<link href="css/main.css" rel="stylesheet">
 <script src="js/find-location.js"></script>
 </head>
-
 
 <body>
 	<h1>와이파이 정보 구하기</h1>
 
-	<div class="top_buttons">
-		<a href="main.jsp">홈</a> | <a href="location-history.jsp">위치 히스토리
-			목록</a> | <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
+	<div class="top_menu">
+		<a href="main.jsp">홈</a> <span>|</span> <a href="location-history.jsp">위치
+			히스토리 목록</a> <span>|</span> <a href="load-wifi.jsp">Open API 와이파이 정보
+			가져오기</a>
 	</div>
-	<form action="main.jsp" method="post">
+	<form action="main.jsp" method="post" class="form_main">
 		<div class="input_fields">
 			<div class="input_item">
-				LAT : <input type="text" id="latField" name ="latField">
+				<label for="latField">LAT : </label> <input type="text"
+					id="latField" name="latField">
 			</div>
 			<span>,</span>
 			<div class="input_item">
-				LNT : <input type="text" id="lntField" name ="lntField">
+				<label for="lntField">LNT : </label> <input type="text"
+					id="lntField" name="lntField">
 			</div>
-
-			<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-
-			<button type="submit">근처 WIFI 정보보기</button>
-
+			<div class="btn_area">
+				<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
+				<button type="submit">근처 WIFI 정보보기</button>
+			</div>
 		</div>
 	</form>
-	
+
 	<%
 	request.setCharacterEncoding("UTF-8");
 	String lat = request.getParameter("latField");
@@ -103,19 +55,16 @@
 		int totalCount = Api.getTotalCount();
 		int batchSize = 1000;
 		for (int start = 1; start <= totalCount; start += batchSize) {
-		    int end = Math.min(start + batchSize - 1, totalCount);
-		    
+			int end = Math.min(start + batchSize - 1, totalCount);
+
 			PublicWifiInfo wifiInfo = Api.getWifiInfo(start, end);
 			List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
 			WifiService.updateDistance(lat, lnt, infoList);
 		}
-		
 	}
-	System.out.println(lat);
-	System.out.println(lnt);
 	%>
 
-	<table id="wifi_table">
+	<table id="wifi_table" class="wifi_table">
 		<thead>
 			<tr>
 				<th>거리(Km)</th>
@@ -141,12 +90,42 @@
 		<tbody>
 			<%
 			if (WifiService.hasData()) {
+				if (lat == null && lnt == null) {
 			%>
 			<tr>
 				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해
 					주세요.</td>
 			</tr>
 			<%
+			} else {
+			List<Wifi> wifis = WifiService.showOrderByDistance();
+			for (Wifi wifi : wifis) {
+				int cnt = 0;
+			%>
+			<tr>
+				<td><%=wifi.getDistance()%></td>
+				<td><%=wifi.getManagerNumber()%></td>
+				<td><%=wifi.getWardOffice()%></td>
+				<td><%=wifi.getMainName()%></td>
+				<td><%=wifi.getAddress1()%></td>
+				<td><%=wifi.getAddress2()%></td>
+				<td><%=wifi.getInstallationFloor()%></td>
+				<td><%=wifi.getInstallationType()%></td>
+				<td><%=wifi.getInstallationBy()%></td>
+				<td><%=wifi.getServiceType()%></td>
+				<td><%=wifi.getNetworkType()%></td>
+				<td><%=wifi.getConstructionYear()%></td>
+				<td><%=wifi.getIndoorOutdoor()%></td>
+				<td><%=wifi.getWifiEnvironment()%></td>
+				<td><%=wifi.getLatitude()%></td>
+				<td><%=wifi.getLongitude()%></td>
+				<td><%=wifi.getWorkDateTime()%></td>
+			</tr>
+			<%
+			cnt++;
+			System.out.println(cnt);
+					}
+				}
 			} else {
 			%>
 			<tr>

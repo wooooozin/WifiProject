@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+.form_main .input_fields {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+
+.form_main .input_fields .input_item,
+.form_main .btn_area {
+	display: inline-block;
+}
+
+.form_main .input_fields .input_item+.input_item {
+	margin-left: 6px;
+}
+
+.wifi_table {
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.wifi_table td, #customers th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.wifi_table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.wifi_table tr:hover {
+	background-color: #ddd;
+}
+
+.wifi_table th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: center;
+	background-color: #04AA6D;
+	color: white;
+	border: 1px solid white;
+}
+
+.wifi_table td {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	color: black;
+	border: 1px solid lightgray;
+}
