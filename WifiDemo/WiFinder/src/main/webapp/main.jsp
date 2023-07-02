@@ -22,32 +22,6 @@
 
 <body>
 	<h1>와이파이 정보 구하기</h1>
-
-	<div class="top_menu">
-		<a href="main.jsp">홈</a> <span>|</span> 
-		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
-		<a href="">북마크 보기</a> <span>|</span>
-		<a href="">북마크 그룹 관리</a>
-	</div>
-	<form action="main.jsp" method="post" class="form_main">
-		<div class="input_fields">
-			<div class="input_item">
-				<label for="latField">LAT : </label> <input type="text"
-					id="latField" name="latField">
-			</div>
-			<span>,</span>
-			<div class="input_item">
-				<label for="lntField">LNT : </label> <input type="text"
-					id="lntField" name="lntField">
-			</div>
-			<div class="btn_area">
-				<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-				<button type="submit">근처 WIFI 정보보기</button>
-			</div>
-		</div>
-	</form>
-
 	<%
 	request.setCharacterEncoding("UTF-8");
 	String lat = request.getParameter("latField");
@@ -65,6 +39,30 @@
 		}
 	}
 	%>
+	<div class="top_menu">
+		<a href="main.jsp">홈</a> <span>|</span> 
+		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
+		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
+		<a href="">북마크 보기</a> <span>|</span>
+		<a href="">북마크 그룹 관리</a>
+	</div>
+	<form action="main.jsp" method="post" class="form_main">
+		<div class="input_fields">
+			<div class="input_item">
+				<label for="latField">LAT : </label> 
+	            <input type="text" id="latField" name="latField" value="<%= (lat != null) ? lat : "" %>">
+			</div>
+			<span>,</span>
+			<div class="input_item">
+				<label for="lntField">LNT : </label> 
+         		<input type="text" id="lntField" name="lntField" value="<%= (lnt != null) ? lnt : "" %>">
+			</div>
+			<div class="btn_area">
+				<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
+				<button type="submit">근처 WIFI 정보보기</button>
+			</div>
+		</div>
+	</form>
 
 	<table id="wifi_table" class="wifi_table">
 		<thead>
