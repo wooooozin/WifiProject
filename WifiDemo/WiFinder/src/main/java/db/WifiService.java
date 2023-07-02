@@ -1,9 +1,14 @@
 package db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
+import model.Location;
 import model.PublicWifiInfo.Row;
+import model.Wifi;
 
 public class WifiService {
 	
@@ -33,9 +38,9 @@ public class WifiService {
 	        
 	        StringBuilder sqlBuilder = new StringBuilder();
 	        sqlBuilder.append("INSERT INTO wifi_info ");
-	        sqlBuilder.append("(distance, mgr_no, wrdofc, main_nm, adress1, adress2, instl_floor, instl_ty, ");
+	        sqlBuilder.append("(mgr_no, wrdofc, main_nm, adress1, adress2, instl_floor, instl_ty, ");
 	        sqlBuilder.append("instl_mby, svc_se, cmcwr, cnstc_year, inout_door, remars3, lat, lnt, work_dttm) ");
-	        sqlBuilder.append("VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+	        sqlBuilder.append("VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 	        sqlBuilder.append("ON DUPLICATE KEY UPDATE mgr_no = mgr_no");
 	        
 	        preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -54,8 +59,8 @@ public class WifiService {
 	            preparedStatement.setString(11, data.getX_SWIFI_CNSTC_YEAR());
 	            preparedStatement.setString(12, data.getX_SWIFI_INOUT_DOOR());
 	            preparedStatement.setString(13, data.getX_SWIFI_REMARS3());
-	            preparedStatement.setString(14, data.getLAT());
-	            preparedStatement.setString(15, data.getLNT());
+	            preparedStatement.setString(14, data.getLNT());
+	            preparedStatement.setString(15, data.getLAT());
 	            preparedStatement.setString(16, data.getWORK_DTTM());
 
 	            preparedStatement.addBatch();
@@ -104,23 +109,21 @@ public class WifiService {
 	        }
 
 	        String sql = "UPDATE wifi_info "
-	        		+ " SET distance = SQRT(POW(69.1 * (lat - ?), 2) + POW(69.1 * (? - lnt) * COS(lat / 57.3), 2)) "
-	        		+ " WHERE mgr_no = ? ";
+	                + "SET distance = (ROUND(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lnt) - radians(?)) + sin(radians(?)) * sin(radians(lat))), 4)) "
+	                + "WHERE mgr_no = ? ; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        for (Row data : dataList) {
-	            double lat = Double.parseDouble(latitude);
-	            double lnt = Double.parseDouble(longitude);
-	            
-	            preparedStatement.setDouble(1, lat);
-	            preparedStatement.setDouble(2, lnt);
-	            preparedStatement.setString(3, data.getX_SWIFI_MGR_NO());
-	            
+	            preparedStatement.setDouble(1, Double.parseDouble(latitude));
+	            preparedStatement.setDouble(2, Double.parseDouble(longitude));
+	            preparedStatement.setDouble(3, Double.parseDouble(latitude));
+	            preparedStatement.setString(4, data.getX_SWIFI_MGR_NO());
 	            preparedStatement.addBatch();
 	        }
-	        System.out.println(dataList.size());
-	        int affectedRows = preparedStatement.executeUpdate();
-	        System.out.println("업데이트된 거리 정보 수: " + affectedRows);
+
+	        int[] affectedRows = preparedStatement.executeBatch();
+
+	        System.out.println("업데이트된 거리 정보 수: " + affectedRows.length);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
@@ -148,6 +151,103 @@ public class WifiService {
 	            throw new RuntimeException(e);
 	        }
 	    }
+	}
+	
+	public static List<Wifi> showOrderByDistance() {
+		List<Wifi> wifis = new ArrayList<>();
+
+		try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+
+	        String sql = " SELECT * FROM wifi_info "
+	        		+ " ORDER BY CAST(distance AS double) LIMIT 20 ; ";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        rs = preparedStatement.executeQuery(); 
+           
+	        while (rs.next()) {
+                String distance = rs.getString("distance");
+                String mgrNo = rs.getString("mgr_no");
+                String wrdofc = rs.getString("wrdofc");
+                String mainNm = rs.getString("main_nm");
+                String address1 = rs.getString("adress1");
+                String address2 = rs.getString("adress2");
+                String instlFloor = rs.getString("instl_floor");
+                String instlTy = rs.getString("instl_ty");
+                String instlMby = rs.getString("instl_mby");
+                String svcSe = rs.getString("svc_se");
+                String cmcwr = rs.getString("cmcwr");
+                String cnstcYear = rs.getString("cnstc_year");
+                String inoutDoor = rs.getString("inout_door");
+                String remars3 = rs.getString("remars3");
+                String lat = rs.getString("lat");
+                String lnt = rs.getString("lnt");
+                String workDttm = rs.getString("work_dttm");
+                
+                Wifi location = new Wifi();
+                location.setDistance(distance);
+                location.setManagerNumber(mgrNo);
+                location.setWardOffice(wrdofc);
+                location.setMainName(mainNm);
+                location.setAddress1(address1);
+                location.setAddress2(address2);
+                location.setInstallationFloor(instlFloor);
+                location.setInstallationType(instlTy);
+                location.setInstallationBy(instlMby);
+                location.setServiceType(svcSe);
+                location.setNetworkType(cmcwr);
+                location.setConstructionYear(cnstcYear);
+                location.setIndoorOutdoor(inoutDoor);
+                location.setWifiEnvironment(remars3);
+                location.setLatitude(lat);
+                location.setLongitude(lnt);
+                location.setWorkDateTime(workDttm);
+                              
+                wifis.add(location);
+            }
+
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	    return wifis;
 	}
 	
 	public static boolean hasData() {
@@ -210,7 +310,4 @@ public class WifiService {
 	    return hasData;
 	}
 	
-	public static void main(String[] args) {
-
-	}
 }
