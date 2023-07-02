@@ -28,15 +28,8 @@
 	String lnt = request.getParameter("lntField");
 	if (lat != null && lnt != null) {
 		LocationSerivce.insertLocationInfo(lat, lnt);
-		int totalCount = Api.getTotalCount();
-		int batchSize = 1000;
-		for (int start = 1; start <= totalCount; start += batchSize) {
-			int end = Math.min(start + batchSize - 1, totalCount);
-
-			PublicWifiInfo wifiInfo = Api.getWifiInfo(start, end);
-			List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
-			WifiService.updateDistance(lat, lnt, infoList);
-		}
+		List<Wifi> wifiManageNumbers = WifiService.selectManageNumberInfo();	
+		WifiService.updateDistance(lat, lnt, wifiManageNumbers);
 	}
 	%>
 	<div class="top_menu">

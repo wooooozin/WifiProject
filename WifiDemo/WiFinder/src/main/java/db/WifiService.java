@@ -1,14 +1,11 @@
 package db;
 
-import java.lang.management.OperatingSystemMXBean;
 import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
 
-import model.Location;
 import model.PublicWifiInfo.Row;
 import model.Wifi;
 
@@ -93,7 +90,70 @@ public class WifiService {
 	    }
 	}
 	
-	public static void updateDistance(String latitude, String longitude, List<Row> dataList) {
+	public static List<Wifi> selectManageNumberInfo() {
+		List<Wifi> wifis = new ArrayList<>();
+
+		try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+
+	        String sql = " SELECT mgr_no FROM wifi_info ";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        rs = preparedStatement.executeQuery(); 
+           
+	        while (rs.next()) {
+                String mgrNo = rs.getString("mgr_no");
+                
+                Wifi wifi = new Wifi();
+                wifi.setManagerNumber(mgrNo);   
+                wifis.add(wifi);
+            }
+
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	    return wifis;
+	}
+	
+	public static void updateDistance(String latitude, String longitude, List<Wifi> dataList) {
 	    try {
 	        Class.forName("org.mariadb.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {
@@ -115,17 +175,17 @@ public class WifiService {
 	                + "WHERE mgr_no = ? ; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
-	        for (Row data : dataList) {
+	        for (Wifi data : dataList) {
 	            preparedStatement.setDouble(1, Double.parseDouble(latitude));
 	            preparedStatement.setDouble(2, Double.parseDouble(longitude));
 	            preparedStatement.setDouble(3, Double.parseDouble(latitude));
-	            preparedStatement.setString(4, data.getX_SWIFI_MGR_NO());
+	            preparedStatement.setString(4, data.getManagerNumber());
 	            preparedStatement.addBatch();
 	        }
 
 	        int[] affectedRows = preparedStatement.executeBatch();
-
-	        System.out.println("업데이트된 거리 정보 수: " + affectedRows.length);
+            System.out.println(affectedRows.length);
+            connection.commit(); 	        
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
