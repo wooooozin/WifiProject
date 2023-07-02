@@ -1,3 +1,4 @@
+<%@page import="db.WifiService"%>
 <%@page import="db.LocationSerivce"%>
 <%@page import="model.Location"%>
 <%@page import="java.util.List"%>
@@ -8,48 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>위치 히스토리 목록</title>
-<style type="text/css">
-.location_top_buttons {
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-#wifi_table {
-	font-family: Arial, Helvetica, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
-}
-
-#wifi_table td, #customers th {
-	border: 1px solid #ddd;
-	padding: 8px;
-}
-
-#wifi_table tr:nth-child(even) {
-	background-color: #f2f2f2;
-}
-
-#wifi_table tr:hover {
-	background-color: #ddd;
-}
-
-#wifi_table th {
-	padding-top: 12px;
-	padding-bottom: 12px;
-	text-align: center;
-	background-color: #04AA6D;
-	color: white;
-	border: 1px solid white;
-}
-
-#wifi_table td {
-	padding-top: 12px;
-	padding-bottom: 12px;
-	text-align: center;
-	color: black;
-	border: 1px solid lightgray;
-}
-</style>
+<link href="css/location-history.css" rel="stylesheet">
+<script src="js/location-history.js"></script>
 </head>
 
 <body>
@@ -59,7 +20,7 @@
 		<a href="main.jsp">홈</a> | <a href="location-history.jsp">위치 히스토리
 			목록</a> | <a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
 	</div>
-	<table id="wifi_table">
+	<table id="history_table" class="history_table">
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -79,27 +40,41 @@
 			</tr>
 			<%
 			} else {
-			%>
-
-			<%
-				List<Location> locations = LocationSerivce.getLocalSearchHistory();
-				for (Location location : locations) {
+			List<Location> locations = LocationSerivce.getLocalSearchHistory();
+			for (Location location : locations) {
 			%>
 
 			<tr>
-				<td><%= location.getLocationId() %></td>
-				<td><%= location.getLatitude() %></td>
-				<td><%= location.getLongitude() %></td>
-				<td><%= location.getConfirmDate() %></td>
-				<td><button type="button" onclick="">삭제</button></td>	
+				<td><%=location.getLocationId()%></td>
+				<td><%=location.getLatitude()%></td>
+				<td><%=location.getLongitude()%></td>
+				<td><%=location.getConfirmDate()%></td>
+				<td>
+                    <form action="location-history.jsp" method="post"
+                        class="form_history">
+                        <input type="hidden" name="id"
+                            value="<%=location.getLocationId()%>">
+                        <button type="submit" onclick="confirmDelete(event)">삭제</button>
+                    </form>
+				</td>
 			</tr>
-			<% 
-			} 
-			%>
 			<%
 			}
 			%>
-		</tbody>
+			<%
+			}
+			String id = request.getParameter("id");
+            if (id != null) {
+                LocationSerivce.deleteLocationInfo(id);
+            %>
+            <script>
+                alert("삭제되었습니다.");
+                window.location.href = "location-history.jsp";
+            </script>
+            <%
+            }
+            %>
+        </tbody>
 	</table>
 </body>
 </html>

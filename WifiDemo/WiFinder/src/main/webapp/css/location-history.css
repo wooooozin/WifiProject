@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.location_top_buttons {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.history_table {
+	font-family: Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.history_table td, #customers th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.history_table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.history_table tr:hover {
+	background-color: #ddd;
+}
+
+.history_table th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: center;
+	background-color: #04AA6D;
+	color: white;
+	border: 1px solid white;
+}
+
+.history_table td {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: center;
+	color: black;
+	border: 1px solid lightgray;
+}

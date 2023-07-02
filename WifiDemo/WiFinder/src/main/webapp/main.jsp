@@ -100,7 +100,6 @@
 			} else {
 			List<Wifi> wifis = WifiService.showOrderByDistance();
 			for (Wifi wifi : wifis) {
-				int cnt = 0;
 			%>
 			<tr>
 				<td><%=wifi.getDistance()%></td>
@@ -122,8 +121,6 @@
 				<td><%=wifi.getWorkDateTime()%></td>
 			</tr>
 			<%
-			cnt++;
-			System.out.println(cnt);
 					}
 				}
 			} else {

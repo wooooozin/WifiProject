@@ -137,7 +137,7 @@ public class LocationSerivce {
 	    return locations;
 	}
 	
-	public static void deleteLoacationInfo(String id) {
+	public static void deleteLocationInfo(String id) {
 		try {
 	        Class.forName("org.mariadb.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {
