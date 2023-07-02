@@ -107,7 +107,11 @@
 				<td><%=wifi.getDistance()%></td>
 				<td><%=wifi.getManagerNumber()%></td>
 				<td><%=wifi.getWardOffice()%></td>
-				<td><%=wifi.getMainName()%></td>
+				<td>
+					<a href="detail-wifi.jsp?manageNumber=<%=wifi.getManagerNumber()%>">
+					<%=wifi.getMainName()%>
+					</a>
+				</td>
 				<td><%=wifi.getAddress1()%></td>
 				<td><%=wifi.getAddress2()%></td>
 				<td><%=wifi.getInstallationFloor()%></td>
