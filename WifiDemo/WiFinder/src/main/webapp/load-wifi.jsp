@@ -16,7 +16,6 @@
 	padding: 15px 0;
 	text-align: center;
 }
-/* .top_elements .top_button {display: block;margin-top: 30px;} */
 </style>
 </head>
 
