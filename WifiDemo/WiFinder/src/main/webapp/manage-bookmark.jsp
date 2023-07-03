@@ -25,7 +25,7 @@
 		</div>
 	</form>
 
-	<table id="wifi_table" class="wifi_table">
+	<table id="manage_table" class="wifi_table">
 		<colgroup>
 			<col width="10%">
 			<col width="auto">
