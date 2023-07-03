@@ -1,3 +1,6 @@
+<%@page import="model.Bookmark"%>
+<%@page import="db.BookmarkService" %>
+<%@page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -45,11 +48,37 @@
 			</tr>
 		</thead>
 		<tbody>
+			<%
+			if (!BookmarkService.hasData()) {
+			%>
 			<tr>
-				<td colspan="6" style="text-align: center;">
-				등록된 북마크가 없어요 😢
+				<td colspan="6" style="text-align: center;">등록된 북마크가 없어요 😢</td>
+			</tr>
+			<%
+			} else {
+			List<Bookmark> bookmarks = BookmarkService.showBookmarkInfoOderByPriority();
+			for (Bookmark bookmark : bookmarks) {
+			%>
+			<tr>
+				<td><%=bookmark.getBookmarkId()%></td>
+				<td><%=bookmark.getBookmarkName()%></td>
+				<td><%=bookmark.getPriority()%></td>
+				<td><%=bookmark.getRegitDate()%></td>
+				<td><%=bookmark.getModifDate()%></td>
+				<td>
+					<form action="" method="post"
+						class="">
+						<input type="hidden" name="id"
+							value="<%=bookmark.getBookmarkId()%>">
+						<button type="submit" onclick="#">수정</button>
+						<button type="submit" onclick="#">삭제</button>
+					</form>
 				</td>
 			</tr>
+			<%
+			}
+			}
+			%>
 		</tbody>
 	</table>
 

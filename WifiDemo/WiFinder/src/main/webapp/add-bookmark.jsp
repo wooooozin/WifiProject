@@ -1,3 +1,4 @@
+<%@page import="db.BookmarkService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
 		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
 	
-	<form action="#" method="post" class="form_main">			
+	<form action="add-bookmark.jsp" method="post" class="form_main">			
 	<table id="wifi_table" class="wifi_table">
 		<tbody>		
 			<colgroup>
@@ -52,5 +53,19 @@
 			</tbody>			
 	</table>	
 	</form>
+		<%
+	request.setCharacterEncoding("UTF-8");
+	String name = request.getParameter("bookmark_name");
+	String priority = request.getParameter("priority");
+	if (name != null && priority != null) {
+		BookmarkService.insertBookmarkInfo(name, priority);
+		%>
+	<script>
+		alert("북마크가 추가되었습니다.");
+		window.location.href = "manage-bookmark.jsp";
+	</script>
+	<%
+	}
+	%>
 </body>
 </html>
