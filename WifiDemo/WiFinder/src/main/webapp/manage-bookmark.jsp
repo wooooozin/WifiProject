@@ -60,13 +60,13 @@
 			for (Bookmark bookmark : bookmarks) {
 			%>
 			<tr>
-				<td><%=bookmark.getBookmarkId()%></td>
-				<td><%=bookmark.getBookmarkName()%></td>
-				<td><%=bookmark.getPriority()%></td>
-				<td><%=bookmark.getRegitDate()%></td>
-				<td><%=bookmark.getModifDate()%></td>
-				<td>
-					<form action="" method="post"
+				<td style="text-align: center"><%=bookmark.getBookmarkId()%></td>
+				<td style="text-align: center"><%=bookmark.getBookmarkName()%></td>
+				<td style="text-align: center"><%=bookmark.getPriority()%></td>
+				<td style="text-align: center"><%=bookmark.getRegitDate()%></td>
+				<td style="text-align: center"><%=bookmark.getModifDate()%></td>
+				<td style="text-align: center;">
+					<form action="" method=""
 						class="">
 						<input type="hidden" name="id"
 							value="<%=bookmark.getBookmarkId()%>">
