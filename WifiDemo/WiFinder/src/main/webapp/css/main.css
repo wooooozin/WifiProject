@@ -4,6 +4,9 @@
 	margin: 15px 0;
 }
 
+.form-manage {
+	margin: 15px 0;
+}
 
 .form_main .input_fields .input_item,
 .form_main .btn_area {
@@ -20,7 +23,8 @@
 	width: 100%;
 }
 
-.wifi_table td, #customers th {
+.wifi_table td,
+#customers th {
 	border: 1px solid #ddd;
 	padding: 8px;
 }
