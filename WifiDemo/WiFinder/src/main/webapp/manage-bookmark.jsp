@@ -1,6 +1,6 @@
 <%@page import="model.Bookmark"%>
-<%@page import="db.BookmarkService" %>
-<%@page import="java.util.List" %>
+<%@page import="db.BookmarkService"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,22 +9,24 @@
 <meta charset="UTF-8">
 <title>북마크 그룹 관리</title>
 <link href="css/main.css" rel="stylesheet">
+<script src="js/location-history.js"></script>
 </head>
 
 <body>
-	<h1>북마크 그룹 관리</h1>
-	
+	<h1>북마크 그룹 수</h1>
+
 	<div class="top_menu">
-		<a href="main.jsp">홈</a> <span>|</span> 
-		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
-		<a href="">북마크 보기</a> <span>|</span>
-		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
+		<a href="main.jsp">홈</a> <span>|</span> <a href="location-history.jsp">위치
+			히스토리 목록</a> <span>|</span> <a href="load-wifi.jsp">Open API 와이파이 정보
+			가져오기</a> <span>|</span> <a href="">북마크 보기</a> <span>|</span> <a
+			href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
 
 	<form action="" class="form-manage">
 		<div>
-			<button type="button" onclick="window.location.href='add-bookmark.jsp'">북마크 그룹 이름 추가</button>
+			<button type="button"
+				onclick="window.location.href='add-bookmark.jsp'">북마크 그룹 이름
+				추가</button>
 		</div>
 	</form>
 
@@ -66,17 +68,22 @@
 				<td style="text-align: center"><%=bookmark.getRegitDate()%></td>
 				<td style="text-align: center"><%=bookmark.getModifDate()%></td>
 				<td style="text-align: center;">
-					<form action="" method=""
-						class="">
-						<input type="hidden" name="id"
-							value="<%=bookmark.getBookmarkId()%>">
-						<button type="submit" onclick="#">수정</button>
-						<button type="submit" onclick="#">삭제</button>
-					</form>
+					<a href="update-bookmark.jsp?id=<%=bookmark.getBookmarkId()%>">수정</a>
+					<a href="manage-bookmark.jsp?id=<%=bookmark.getBookmarkId()%>" onclick="confirmDelete(event)">삭제</a>
 				</td>
 			</tr>
 			<%
 			}
+			}
+			String id = request.getParameter("id");
+			if (id != null) {
+			BookmarkService.deleteLocationInfo(id);
+			%>
+			<script>
+				alert("삭제되었습니다.");
+				window.location.href = "manage-bookmark.jsp";
+			</script>
+			<%
 			}
 			%>
 		</tbody>

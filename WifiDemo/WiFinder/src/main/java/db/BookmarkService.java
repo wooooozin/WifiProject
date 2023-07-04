@@ -153,6 +153,62 @@ public class BookmarkService {
 		
 	}
 	
+	public static void deleteLocationInfo(String id) {
+		try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+	    
+	    try {
+            // 커넥션 객체 생성
+            connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+            // 쿼리 생성
+            String sql = " DELETE FROM bookmark_info "
+            		+ "WHERE bookmark_id = ? ; ";
+
+            int idValue = Integer.parseInt(id);
+            
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idValue);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("삭제 성공");
+            } else {
+                System.out.println("삭제 실패");
+            }
+	    } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                if (!preparedStatement.isClosed()) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                if (!connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+	}
+	
 	public static boolean hasData() {
 	    try {
 	        Class.forName("org.mariadb.jdbc.Driver");

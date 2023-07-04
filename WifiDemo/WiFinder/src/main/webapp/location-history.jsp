@@ -60,8 +60,6 @@
 			</tr>
 			<%
 			}
-			%>
-			<%
 			}
 			String id = request.getParameter("id");
             if (id != null) {
