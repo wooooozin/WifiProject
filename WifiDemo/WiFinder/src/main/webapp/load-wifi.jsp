@@ -20,23 +20,11 @@
 </head>
 
 <body>
-	<div class="top_elements">
-		<h1>
-			<%
-			// api 한번 호출해서 전체 데이터 갯수 저장 및 출력 
-			int count = Api.getTotalCount();
-			out.write("<h1>");
-			out.write(count + "개의 WIFI정보를 정상적으로 저장하였습니다.");
-			out.write("</h1>");
-			%>
-		</h1>
-		<div class="top_button">
-			<a href="main.jsp">홈으로 돌아가기</a>
-		</div>
-	</div>
+
 	
 	<%
 	// 1000단위로 데이터 호출해 DB에 데이터 저장하기
+	int count = Api.getTotalCount();
 	int totalCount = count;
 	int batchSize = 1000;
 	for (int start = 1; start <= totalCount; start += batchSize) {
@@ -46,7 +34,19 @@
 		List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
 		WifiService.insertWifiInfo(infoList);
 	}
+	int maxId = WifiService.showMaxWifiInfo();	
 	%>
+	
+		<div class="top_elements">
+		<h1>
+			<%
+			out.write(maxId + "개의 WIFI 정보를 정상적으로 저장했습니다.");
+			%>
+		</h1>
+		<div class="top_button">
+			<a href="main.jsp">홈으로 돌아가기</a>
+		</div>
+	</div>
 
 </body>
 </html>

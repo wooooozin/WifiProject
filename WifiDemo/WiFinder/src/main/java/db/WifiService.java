@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import model.PublicWifiInfo.Row;
 import model.Wifi;
@@ -14,6 +15,65 @@ public class WifiService {
 	private static String url = "jdbc:mariadb://localhost:3306/wifi";
 	private static String dbUserId = "wifiuser";
 	private static String dbPassword = "wifi";
+	
+	public static int showMaxWifiInfo() {
+		int maxIdCount = 0;
+		try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+
+	        String sql = " SELECT MAX(wifi_id) FROM wifi_info ; ";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        rs = preparedStatement.executeQuery(); 
+           
+	        while (rs.next()) {
+	        	maxIdCount = rs.getInt(1);
+            }
+
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+		
+		return maxIdCount; 
+	}
 	
 	public static void insertWifiInfo(List<Row> dataList) {
 	    if (dataList.isEmpty()) {
