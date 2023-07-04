@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<h1>북마크 그룹 수</h1>
+	<h1>북마크 그룹 관리</h1>
 
 	<div class="top_menu">
 		<a href="main.jsp">홈</a> <span>|</span> <a href="location-history.jsp">위치

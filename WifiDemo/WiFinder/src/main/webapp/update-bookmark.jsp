@@ -1,25 +1,24 @@
 <%@page import="db.BookmarkService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>북마크 그룹 추가</title>
+<title>북마크 그룹 수정</title>
 <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
-	<h1>북마크 그룹 추가</h1>
-	
+	<h1>북마크 그룹 수정</h1>
+
 	<div class="top_menu">
-		<a href="main.jsp">홈</a> <span>|</span> 
-		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
-		<a href="">북마크 보기</a> <span>|</span>
-		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
+		<a href="main.jsp">홈</a> <span>|</span> <a href="location-history.jsp">위치
+			히스토리 목록</a> <span>|</span> <a href="load-wifi.jsp">Open API 와이파이 정보
+			가져오기</a> <span>|</span> <a href="">북마크 보기</a> <span>|</span> <a
+			href="manage-bookmark.jsp">북마크 그룹 수정</a>
 	</div>
-	
-	<form action="add-bookmark.jsp" method="post" class="form_main">			
+
+	<form action="update-bookmark.jsp" method="post" class="form_main">			
 	<table id="wifi_table" class="wifi_table">
 		<tbody>		
 			<colgroup>
@@ -47,26 +46,30 @@
 			<tr>
 				<td colspan="2" style="text-align: center;">
 					<a href="manage-bookmark.jsp" style="margin-right: 15px;">돌아가기</a>
-					<button type="submit">추가</button>
+					<input type="hidden" name="id" value="<%= request.getParameter("id") %>">
+					<button type="submit">수정</button>					
 				</td>
 			</tr>
 			</tbody>			
 	</table>	
 	</form>
 	<%
+	request.setCharacterEncoding("UTF-8");
 	String id = request.getParameter("id");
 	String name = request.getParameter("bookmark_name");
 	String priority = request.getParameter("priority");
-	out.write(id);
+	System.out.println(name);
 	if (id != null && name != null && priority != null) {
-		
+		BookmarkService.updateBookmarkInfo(id, name, priority);
+		System.out.println(name);
 	%>
 	<script>
-		alert("북마크가 수되었습니다.");
+		alert("북마크가 수정되었습니다.");
 		window.location.href = "manage-bookmark.jsp";
 	</script>
 	<%
 	}
 	%>
+	
 </body>
 </html>

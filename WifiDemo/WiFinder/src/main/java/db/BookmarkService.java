@@ -14,6 +14,7 @@ import model.Bookmark;
 import model.Wifi;
 
 public class BookmarkService {
+
 	private static String url = "jdbc:mariadb://localhost:3306/wifi";
 	private static String dbUserId = "wifiuser";
 	private static String dbPassword = "wifi";
@@ -207,6 +208,73 @@ public class BookmarkService {
                 throw new RuntimeException(e);
             }
         }
+	}
+	
+	public static void updateBookmarkInfo(String id, String name, String priority) {
+		try {
+	        Class.forName("org.mariadb.jdbc.Driver");
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+	        if (connection == null) {
+	            throw new SQLException("Failed to establish a database connection.");
+	        }
+	        
+	        String sql = "UPDATE bookmark_info "
+	        		+ " SET bookmark_name = ?, priority = ?, modif_date = ? "
+	        		+ " WHERE bookmark_id = ? ; ";
+	        LocalDateTime now = LocalDateTime.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        String currentTime = now.format(formatter);
+	        
+	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement.setString(1, name);
+	        preparedStatement.setInt(2, Integer.parseInt(priority));
+	        preparedStatement.setString(3, currentTime);
+	        preparedStatement.setInt(4, Integer.parseInt(id));
+	        
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("수정 성공");
+	        } else {
+	            System.out.println("수정 실패");
+	        }
+            connection.commit(); 	        
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null && !rs.isClosed()) {
+	                rs.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (preparedStatement != null && !preparedStatement.isClosed()) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        try {
+	            if (connection != null && !connection.isClosed()) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
 	}
 	
 	public static boolean hasData() {
