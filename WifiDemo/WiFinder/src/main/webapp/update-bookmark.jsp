@@ -16,6 +16,22 @@
 			가져오기</a> <span>|</span> <a href="">북마크 보기</a> <span>|</span> <a
 			href="manage-bookmark.jsp">북마크 그룹 수정</a>
 	</div>
+	
+	<%
+	request.setCharacterEncoding("UTF-8");
+	String id = request.getParameter("id"); 
+	String name = request.getParameter("bookmark_name");
+	String priority = request.getParameter("priority");
+	if (id != null && name != null && priority != null && request.getMethod().equalsIgnoreCase("POST")) {
+		BookmarkService.updateBookmarkInfo(id, name, priority);
+	%>
+	<script>
+		alert("북마크가 수정되었습니다.");
+		window.location.href = "manage-bookmark.jsp";
+	</script>
+	<%
+	}
+	%>
 
 	<form action="update-bookmark.jsp" method="post" class="form_main">			
 	<table id="wifi_table" class="wifi_table">
@@ -29,7 +45,7 @@
 				<td>
 					<div class="input_item">
 						<label for="bookmark_name"></label> 
-	           			<input type="text" id="bookmark_name" name="bookmark_name">
+	           			<input type="text" id="bookmark_name" name="bookmark_name" value="<%= request.getParameter("bookmark_name") %>">
 					</div>
 				</td>
 			</tr>
@@ -38,7 +54,7 @@
 				<td>
 					<div class="input_item">
 						<label for="priority"></label> 
-	           			<input type="text" id="priority" name="priority">
+	           			<input type="text" id="priority" name="priority" value="<%= request.getParameter("priority") %>">
 					</div>
 				</td>
 			</tr>
@@ -51,24 +67,6 @@
 			</tr>
 			</tbody>			
 	</table>	
-	</form>
-	<%
-	request.setCharacterEncoding("UTF-8");
-	String id = request.getParameter("id");
-	String name = request.getParameter("bookmark_name");
-	String priority = request.getParameter("priority");
-	System.out.println(name);
-	if (id != null && name != null && priority != null) {
-		BookmarkService.updateBookmarkInfo(id, name, priority);
-		System.out.println(name);
-	%>
-	<script>
-		alert("북마크가 수정되었습니다.");
-		window.location.href = "manage-bookmark.jsp";
-	</script>
-	<%
-	}
-	%>
-	
+	</form>	
 </body>
 </html>

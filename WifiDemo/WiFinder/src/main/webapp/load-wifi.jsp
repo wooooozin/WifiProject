@@ -34,7 +34,7 @@
 		List<Row> infoList = wifiInfo.getTbPublicWifiInfo().getRow();
 		WifiService.insertWifiInfo(infoList);
 	}
-	int maxId = WifiService.showMaxWifiInfo();	
+	int maxId = WifiService.showCountWifiInfo();	
 	%>
 	
 		<div class="top_elements">
