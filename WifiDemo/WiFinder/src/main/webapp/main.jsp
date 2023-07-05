@@ -28,7 +28,7 @@
 	String lnt = request.getParameter("lntField");
 	if (lat != null && lnt != null) {
 		LocationSerivce.insertLocationInfo(lat, lnt);
-		List<Wifi> wifiManageNumbers = WifiService.selectManageNumberInfo();	
+		List<Wifi> wifiManageNumbers = WifiService.selectIdNumberInfo();	
 		WifiService.updateDistance(lat, lnt, wifiManageNumbers);
 	}
 	%>
@@ -99,7 +99,7 @@
 				<td><%=wifi.getManagerNumber()%></td>
 				<td><%=wifi.getWardOffice()%></td>
 				<td>
-					<a href="detail-wifi.jsp?manageNumber=<%=wifi.getManagerNumber()%>">
+					<a href="detail-wifi.jsp?wifiId=<%=wifi.getWifiId()%>">
 					<%=wifi.getMainName()%>
 					</a>
 				</td>

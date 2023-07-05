@@ -1,7 +1,6 @@
 <%@page import="db.WifiService"%>
 <%@page import="model.Wifi"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +10,9 @@
 </head>
 <body>
 	<%
-    String manageNumber = request.getParameter("manageNumber");
-	Wifi wifiInfo = WifiService.showDetailWifiInfo(manageNumber);
+	request.setCharacterEncoding("utf-8");
+    String wifiId = request.getParameter("wifiId");
+	Wifi wifiInfo = WifiService.showDetailWifiInfo(wifiId);
     %>
     
 	<h1>와이파이 정보 보기</h1>

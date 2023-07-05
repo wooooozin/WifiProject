@@ -232,14 +232,14 @@ public class WifiService {
 
 	        String sql = "UPDATE wifi_info "
 	                + "SET distance = (ROUND(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lnt) - radians(?)) + sin(radians(?)) * sin(radians(lat))), 4)) "
-	                + "WHERE mgr_no = ? ; ";
+	                + "WHERE wifi_id = ? ; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        for (Wifi data : dataList) {
 	            preparedStatement.setDouble(1, Double.parseDouble(latitude));
 	            preparedStatement.setDouble(2, Double.parseDouble(longitude));
 	            preparedStatement.setDouble(3, Double.parseDouble(latitude));
-	            preparedStatement.setString(4, data.getManagerNumber());
+	            preparedStatement.setInt(4, data.getWifiId());
 	            preparedStatement.addBatch();
 	        }
 
@@ -301,6 +301,7 @@ public class WifiService {
 	        rs = preparedStatement.executeQuery(); 
            
 	        while (rs.next()) {
+	        	int id = rs.getInt("wifi_id");
                 String distance = rs.getString("distance");
                 String mgrNo = rs.getString("mgr_no");
                 String wrdofc = rs.getString("wrdofc");
@@ -320,6 +321,7 @@ public class WifiService {
                 String workDttm = rs.getString("work_dttm");
                 
                 Wifi wifi = new Wifi();
+                wifi.setWifiId(id);
                 wifi.setDistance(distance);
                 wifi.setManagerNumber(mgrNo);
                 wifi.setWardOffice(wrdofc);
@@ -372,7 +374,7 @@ public class WifiService {
 	    return wifis;
 	}
 	
-	public static Wifi showDetailWifiInfo(String manageNumber) {
+	public static Wifi showDetailWifiInfo(String id) {
 		Wifi wifiInfo = new Wifi();
 		
 		try {
@@ -392,13 +394,14 @@ public class WifiService {
 	        }
 
 	        String sql = " SELECT * FROM wifi_info "
-	        		+ "WHERE mgr_no = ? ; ";
+	        		+ "WHERE wifi_id = ? ; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
-	        preparedStatement.setString(1, manageNumber);
+	        preparedStatement.setInt(1, Integer.parseInt(id));
 	        rs = preparedStatement.executeQuery(); 
            
 	        while (rs.next()) {
+	        	int wifiId = rs.getInt("wifi_id");
                 String distance = rs.getString("distance");
                 String mgrNo = rs.getString("mgr_no");
                 String wrdofc = rs.getString("wrdofc");
@@ -417,6 +420,7 @@ public class WifiService {
                 String lnt = rs.getString("lnt");
                 String workDttm = rs.getString("work_dttm");
                 
+                wifiInfo.setWifiId(wifiId);
                 wifiInfo.setDistance(distance);
                 wifiInfo.setManagerNumber(mgrNo);
                 wifiInfo.setWardOffice(wrdofc);
