@@ -1,5 +1,8 @@
+<%@page import="db.BookmarkService"%>
+<%@page import="model.Bookmark"%>
 <%@page import="db.WifiService"%>
 <%@page import="model.Wifi"%>
+<%@page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -27,11 +30,18 @@
 	<div>
 		<form action="#" class="form_main">
 			<select name="bookmars" id="bookmark">
-				 <option value="none" selected>북마크 그룹 이름 선택</option>
-			</select>		
+				<option value="none" selected>북마크 그룹 이름 선택</option>
+				<%
+				List<Bookmark> bookmarks = BookmarkService.showBookmarkInfoOderByPriority();
+				for (Bookmark bookmark : bookmarks) {
+				%>
+				<option><%=bookmark.getBookmarkName()%></option>
+				<%
+				}
+				%>
+			</select>
 			<button type="submit">북마크 추가하기</button>
 		</form>
-		
 	</div>
 	
 	<table id="wifi_table" class="wifi_table">
