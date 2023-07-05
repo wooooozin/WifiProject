@@ -150,7 +150,7 @@ public class WifiService {
 	    }
 	}
 	
-	public static List<Wifi> selectManageNumberInfo() {
+	public static List<Wifi> selectIdNumberInfo() {
 		List<Wifi> wifis = new ArrayList<>();
 
 		try {
@@ -169,16 +169,16 @@ public class WifiService {
 	            throw new SQLException("Failed to establish a database connection.");
 	        }
 
-	        String sql = " SELECT mgr_no FROM wifi_info ";
+	        String sql = " SELECT wifi_id FROM wifi_info ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        rs = preparedStatement.executeQuery(); 
            
 	        while (rs.next()) {
-                String mgrNo = rs.getString("mgr_no");
+                int id = rs.getInt("wifi_id");
                 
                 Wifi wifi = new Wifi();
-                wifi.setManagerNumber(mgrNo);   
+                wifi.setWifiId(id);   
                 wifis.add(wifi);
             }
 

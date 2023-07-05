@@ -2,7 +2,6 @@ package model;
 
 public class Wifi {
 	private int wifiId;
-	private int locationId;
 	private String distance;
 	private String managerNumber;
 	private String wardOffice;
@@ -163,13 +162,5 @@ public class Wifi {
 
 	public void setWifiId(int wifiId) {
 		this.wifiId = wifiId;
-	}
-
-	public int getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
 	}
 }
