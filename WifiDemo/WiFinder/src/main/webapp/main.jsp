@@ -124,7 +124,7 @@
 			%>
 			<tr>
 				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를
-					가져온 후 조회해 주세요.</td>
+					가져온 후 조회해 주세요.🥲</td>
 			</tr>
 			<%
 			}

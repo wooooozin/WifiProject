@@ -16,7 +16,7 @@ public class WifiService {
 	private static String dbUserId = "wifiuser";
 	private static String dbPassword = "wifi";
 	
-	public static int showMaxWifiInfo() {
+	public static int showCountWifiInfo() {
 		int maxIdCount = 0;
 		try {
 	        Class.forName("org.mariadb.jdbc.Driver");
@@ -34,7 +34,7 @@ public class WifiService {
 	            throw new SQLException("Failed to establish a database connection.");
 	        }
 
-	        String sql = " SELECT MAX(wifi_id) FROM wifi_info ; ";
+	        String sql = " SELECT COUNT(*) FROM wifi_info ; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        rs = preparedStatement.executeQuery(); 
