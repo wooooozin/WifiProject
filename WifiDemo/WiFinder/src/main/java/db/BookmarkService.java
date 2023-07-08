@@ -44,7 +44,7 @@ public class BookmarkService {
 	        
 	        String sql = " INSERT INTO bookmark_info "
 	        		+ " (bookmark_name, priority, regit_date, modif_date) "
-	        		+ " VALUES (?, ?, ?, ?, ?) ; ";
+	        		+ " VALUES (?, ?, ?, ?) ; ";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, bookmarkName);
             preparedStatement.setInt(2, Integer.parseInt(priority));
