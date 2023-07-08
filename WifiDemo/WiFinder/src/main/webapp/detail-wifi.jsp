@@ -1,3 +1,5 @@
+<%@page import="db.BookmarkListService"%>
+<%@page import="model.BookmarkList"%>
 <%@page import="db.BookmarkService"%>
 <%@page import="model.Bookmark"%>
 <%@page import="db.WifiService"%>
@@ -11,6 +13,8 @@
 <title>와이파이 정보 보기</title>
 <link href="css/main.css" rel="stylesheet">
 </head>
+
+
 <body>
 	<%
 	request.setCharacterEncoding("utf-8");
@@ -27,21 +31,37 @@
 		<a href="show-bookmark.jsp">북마크 보기</a> <span>|</span>
 		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
-	<div>
-		<form action="#" class="form_main">
-			<select name="bookmars" id="bookmark">
-				<option value="none" selected>북마크 그룹 이름 선택</option>
-				<%
-				List<Bookmark> bookmarks = BookmarkService.showBookmarkInfoOderByPriority();
-				for (Bookmark bookmark : bookmarks) {
-				%>
-				<option><%=bookmark.getBookmarkName()%></option>
-				<%
-				}
-				%>
-			</select>
-			<button type="submit">북마크 추가하기</button>
-		</form>
+	
+	<div class="top_menu">
+	<form action="detail-wifi.jsp" method="post">
+		<select name="bookmarkId" id="bookmark">
+			<option value="none" selected>북마크 그룹 이름 선택</option>
+			<%
+			List<Bookmark> bookmarks = BookmarkService.showBookmarkInfoOderByPriority();
+			for (Bookmark bookmark : bookmarks) {
+			%>
+			<option value="<%=bookmark.getBookmarkId()%>"><%=bookmark.getBookmarkName()%></option>
+			<%
+			}							
+			%>
+		</select>
+		<input type="hidden" name="wifiId" value="<%=wifiId%>">
+		<button type="submit">북마크 추가하기</button>
+	</form>
+	<%
+		String bookmarkId = request.getParameter("bookmarkId");
+		if (bookmarkId != null && !bookmarkId.equals("none")) {
+			System.out.println(bookmarkId);
+			System.out.println(wifiId);
+			BookmarkListService.insertBookmarkInfo(wifiId, bookmarkId);
+			%>
+			<script>
+			alert("북마크가 추가 되었습니다.");
+			window.location.href = "show-bookmark.jsp";
+			</script>	
+		<%
+		}
+		%>
 	</div>
 	
 	<table id="wifi_table" class="wifi_table">

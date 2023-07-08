@@ -1,3 +1,7 @@
+<%@page import="db.BookmarkListService"%>
+<%@page import="model.BookmarkList"%>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -35,6 +39,30 @@
 			</tr>
 		</thead>
 		<tbody>
+		<%
+			if (!BookmarkListService.hasData()) {
+			%>
+			<tr>
+				<td colspan="6" style="text-align: center;">등록된 북마크가 없어요 😢</td>
+			</tr>
+			<%
+			} else {
+			List<BookmarkList> bookmarkLists = BookmarkListService.showBookmarkLists();
+			for (BookmarkList bookmarkList : bookmarkLists) {
+			%>
+			<tr>
+				<td style="text-align: center"><%=bookmarkList.getBookmarkListId()%></td>
+				<td style="text-align: center"><%=bookmarkList.getBookmarkName()%></td>
+				<td style="text-align: center"><%=bookmarkList.getWifiMainName()%></td>
+				<td style="text-align: center"><%=bookmarkList.getRegitDateS()%></td>
+				<td style="text-align: center">
+				<a href="show-bookmark.jsp?id=<%=bookmarkList.getBookmarkListId()%>">삭제</a>
+				</td>
+			</tr>
+			<%
+			}
+			}
+			%>
 			
 		</tbody>
 	</table>
