@@ -55,7 +55,7 @@
 			if (!BookmarkService.hasData()) {
 			%>
 			<tr>
-				<td colspan="6" style="text-align: center;">등록된 북마크가 없어요 😢</td>
+				<td colspan="6" style="text-align: center;">등록된 북마크 그룹이 없어요 😢</td>
 			</tr>
 			<%
 			} else {
