@@ -2,6 +2,7 @@ package model;
 
 public class BookmarkList {
 	private String bookmarkListId;
+	private String wifiId;
 	private String bookmarkName;
 	private String wifiMainName;
 	private String regitDateS;
@@ -36,6 +37,14 @@ public class BookmarkList {
 	
 	public void setRegitDateS(String regitDateS) {
 		this.regitDateS = regitDateS;
+	}
+
+	public String getWifiId() {
+		return wifiId;
+	}
+
+	public void setWifiId(String wifiId) {
+		this.wifiId = wifiId;
 	}
 	
 	

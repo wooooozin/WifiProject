@@ -39,7 +39,7 @@ public class BookmarkListService {
 	            throw new SQLException("Failed to establish a database connection.");
 	        }
 
-	        String sql = " SELECT bl.bookmark_list_id, b.bookmark_name, w.main_nm, bl.regit_date FROM bookmark_list bl, wifi_info w, bookmark_info b "
+	        String sql = " SELECT bl.wifi_id, bl.bookmark_list_id, b.bookmark_name, w.main_nm, bl.regit_date FROM bookmark_list bl, wifi_info w, bookmark_info b "
 	        		+ "WHERE bl.wifi_id = w.wifi_id "
 	        		+ "AND bl.bookmark_id = b.bookmark_id "
 	        		+ "ORDER BY bookmark_list_id; "
@@ -50,6 +50,7 @@ public class BookmarkListService {
            
 	        while (rs.next()) {
                 String id = rs.getString("bookmark_list_id");
+                String wifiId = rs.getString("wifi_id");
                 String bookmarkName = rs.getString("bookmark_name");
                 String wifiName = rs.getString("main_nm");
                 String regitDate = rs.getString("regit_date");
@@ -57,6 +58,7 @@ public class BookmarkListService {
                 
                 BookmarkList bookmarkList = new BookmarkList();
                 bookmarkList.setBookmarkListId(id);
+                bookmarkList.setWifiId(wifiId);
                 bookmarkList.setBookmarkName(bookmarkName);
                 bookmarkList.setWifiMainName(wifiName);
                 bookmarkList.setRegitDateS(regitDate);

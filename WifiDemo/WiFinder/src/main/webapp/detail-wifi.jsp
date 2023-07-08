@@ -51,8 +51,6 @@
 	<%
 		String bookmarkId = request.getParameter("bookmarkId");
 		if (bookmarkId != null && !bookmarkId.equals("none")) {
-			System.out.println(bookmarkId);
-			System.out.println(wifiId);
 			BookmarkListService.insertBookmarkInfo(wifiId, bookmarkId);
 			%>
 			<script>
@@ -60,8 +58,14 @@
 			window.location.href = "show-bookmark.jsp";
 			</script>	
 		<%
-		}
-		%>
+		} else if (request.getMethod().equalsIgnoreCase("POST")) {
+			%>
+			<script>
+				alert("북마크 그룹을 선택해 주세요.");
+			</script>
+			<%
+			}
+			%>
 	</div>
 	
 	<table id="wifi_table" class="wifi_table">

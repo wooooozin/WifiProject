@@ -53,7 +53,11 @@
 			<tr>
 				<td style="text-align: center"><%=bookmarkList.getBookmarkListId()%></td>
 				<td style="text-align: center"><%=bookmarkList.getBookmarkName()%></td>
-				<td style="text-align: center"><%=bookmarkList.getWifiMainName()%></td>
+				<td style="text-align: center">
+					<a href="detail-wifi.jsp?wifiId=<%=bookmarkList.getWifiId()%>">
+					<%=bookmarkList.getWifiMainName()%>
+					</a>
+				</td>
 				<td style="text-align: center"><%=bookmarkList.getRegitDateS()%></td>
 				<td style="text-align: center">
 				<a href="show-bookmark.jsp?id=<%=bookmarkList.getBookmarkListId()%>">삭제</a>
