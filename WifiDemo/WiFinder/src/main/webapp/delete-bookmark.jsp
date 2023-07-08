@@ -4,11 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>북마크 그룹 수정</title>
+<title>북마크 그룹 삭제</title>
 <link href="css/main.css" rel="stylesheet">
+<script src="js/location-history.js"></script>
 </head>
 <body>
-	<h1>북마크 그룹 수정</h1>
+	<h1>북마크 그룹 삭제</h1>
 
 	<div class="top_menu">
 		<a href="main.jsp">홈</a> <span>|</span> 
@@ -18,23 +19,27 @@
 		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
 	
+	<div>
+	<p><strong>북마크를 삭제하시겠습니까?</strong></p>
+	</div>
+	
 	<%
 	request.setCharacterEncoding("UTF-8");
 	String id = request.getParameter("id"); 
 	String name = request.getParameter("bookmark_name");
 	String priority = request.getParameter("priority");
 	if (id != null && name != null && priority != null && request.getMethod().equalsIgnoreCase("POST")) {
-		BookmarkService.updateBookmarkInfo(id, name, priority);
+		BookmarkService.deleteLocationInfo(id);
 	%>
 	<script>
-		alert("북마크가 수정되었습니다.");
+		alert("북마크가 삭제되었습니다.");
 		window.location.href = "manage-bookmark.jsp";
 	</script>
 	<%
 	}
 	%>
 
-	<form action="update-bookmark.jsp" method="post" class="form_main">			
+	<form action="delete-bookmark.jsp" method="post" class="form_main">			
 	<table id="wifi_table" class="wifi_table">
 		<tbody>		
 			<colgroup>
@@ -63,7 +68,7 @@
 				<td colspan="2" style="text-align: center;">
 					<a href="manage-bookmark.jsp" style="margin-right: 15px;">돌아가기</a>
 					<input type="hidden" name="id" value="<%= request.getParameter("id") %>">
-					<button type="submit">수정</button>					
+					<button type="submit">삭제</button>					
 				</td>
 			</tr>
 			</tbody>			

@@ -70,21 +70,11 @@
 				<td style="text-align: center"><%=bookmark.getModifDate()%></td>
 				<td style="text-align: center;">
 					<a href="update-bookmark.jsp?id=<%=bookmark.getBookmarkId()%>&bookmark_name=<%=bookmark.getBookmarkName()%>&priority=<%=bookmark.getPriority()%>">수정</a>
-					<a href="manage-bookmark.jsp?id=<%=bookmark.getBookmarkId()%>" onclick="confirmDelete(event)">삭제</a>
+					<a href="delete-bookmark.jsp?id=<%=bookmark.getBookmarkId()%>&bookmark_name=<%=bookmark.getBookmarkName()%>&priority=<%=bookmark.getPriority()%>">삭제</a>
 				</td>
 			</tr>
 			<%
 			}
-			}
-			String id = request.getParameter("id");
-			if (id != null) {
-			BookmarkService.deleteLocationInfo(id);
-			%>
-			<script>
-				alert("삭제되었습니다.");
-				window.location.href = "manage-bookmark.jsp";
-			</script>
-			<%
 			}
 			%>
 		</tbody>
