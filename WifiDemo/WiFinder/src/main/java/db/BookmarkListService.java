@@ -10,10 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Bookmark;
 import model.BookmarkList;
 
-public class BookmarkListSerivce {
+public class BookmarkListService {
 	
 	private static String url = "jdbc:mariadb://localhost:3306/wifi";
 	private static String dbUserId = "wifiuser";
@@ -42,7 +41,9 @@ public class BookmarkListSerivce {
 
 	        String sql = " SELECT bl.bookmark_list_id, b.bookmark_name, w.main_nm, bl.regit_date FROM bookmark_list bl, wifi_info w, bookmark_info b "
 	        		+ "WHERE bl.wifi_id = w.wifi_id "
-	        		+ "AND bl.bookmark_id = b.bookmark_id ; ";
+	        		+ "AND bl.bookmark_id = b.bookmark_id "
+	        		+ "ORDER BY bookmark_list_id; "
+	        		+ "; ";
 
 	        preparedStatement = connection.prepareStatement(sql);
 	        rs = preparedStatement.executeQuery(); 
