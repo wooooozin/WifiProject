@@ -5,7 +5,7 @@ public class BookmarkList {
 	private String wifiId;
 	private String bookmarkName;
 	private String wifiMainName;
-	private String regitDateS;
+	private String regitDate;
 	
 	public String getBookmarkListId() {
 		return bookmarkListId;
@@ -31,12 +31,12 @@ public class BookmarkList {
 		this.wifiMainName = wifiMainName;
 	}
 	
-	public String getRegitDateS() {
-		return regitDateS;
+	public String getRegitDate() {
+		return regitDate;
 	}
 	
-	public void setRegitDateS(String regitDateS) {
-		this.regitDateS = regitDateS;
+	public void setRegitDate(String regitDate) {
+		this.regitDate = regitDate;
 	}
 
 	public String getWifiId() {

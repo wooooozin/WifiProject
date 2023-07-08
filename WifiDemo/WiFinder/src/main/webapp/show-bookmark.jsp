@@ -49,18 +49,26 @@
 			} else {
 			List<BookmarkList> bookmarkLists = BookmarkListService.showBookmarkLists();
 			for (BookmarkList bookmarkList : bookmarkLists) {
+				String bookmarkListId = bookmarkList.getBookmarkListId();
+				String bookmarkName = bookmarkList.getBookmarkName();
+				String wifiId = bookmarkList.getWifiId();
+				String wifiName = bookmarkList.getWifiMainName();
+				String regitDate = bookmarkList.getRegitDate();
 			%>
 			<tr>
-				<td style="text-align: center"><%=bookmarkList.getBookmarkListId()%></td>
-				<td style="text-align: center"><%=bookmarkList.getBookmarkName()%></td>
+				<td style="text-align: center"><%=bookmarkListId%></td>
+				<td style="text-align: center"><%=bookmarkName%></td>
 				<td style="text-align: center">
-					<a href="detail-wifi.jsp?wifiId=<%=bookmarkList.getWifiId()%>">
-					<%=bookmarkList.getWifiMainName()%>
+					<a href="detail-wifi.jsp?wifiId=<%=wifiId%>">
+					<%=wifiName%>
 					</a>
 				</td>
-				<td style="text-align: center"><%=bookmarkList.getRegitDateS()%></td>
+				<td style="text-align: center"><%=regitDate%></td>
 				<td style="text-align: center">
-				<a href="show-bookmark.jsp?id=<%=bookmarkList.getBookmarkListId()%>">삭제</a>
+				<a href="delete-bookmarklist.jsp?id=<%=bookmarkListId%>
+				&bookmark_name=<%=bookmarkName%>
+				&wifi_name=<%=wifiName%>
+				&regit_date=<%=regitDate%>">삭제</a>
 				</td>
 			</tr>
 			<%

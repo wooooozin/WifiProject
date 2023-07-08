@@ -61,7 +61,7 @@ public class BookmarkListService {
                 bookmarkList.setWifiId(wifiId);
                 bookmarkList.setBookmarkName(bookmarkName);
                 bookmarkList.setWifiMainName(wifiName);
-                bookmarkList.setRegitDateS(regitDate);
+                bookmarkList.setRegitDate(regitDate);
                 
                 bookmarkLists.add(bookmarkList);
             }
@@ -159,7 +159,7 @@ public class BookmarkListService {
 	}
 	
 	// 삭제 하기 
-	public static void deleteLocationInfo(String id) {
+	public static void deleteBookmarkListInfo(String id) {
 		try {
 	        Class.forName("org.mariadb.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {

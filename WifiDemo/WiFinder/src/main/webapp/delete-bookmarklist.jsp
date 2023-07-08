@@ -1,15 +1,16 @@
+<%@page import="db.BookmarkListService"%>
 <%@page import="db.BookmarkService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>북마크 그룹 삭제</title>
+<title>북마크 삭제</title>
 <link href="css/main.css" rel="stylesheet">
 <script src="js/location-history.js"></script>
 </head>
 <body>
-	<h1>북마크 그룹 삭제</h1>
+	<h1>북마크 삭제</h1>
 
 	<div class="top_menu">
 		<a href="main.jsp">홈</a> <span>|</span> 
@@ -20,26 +21,27 @@
 	</div>
 	
 	<div>
-	<p><strong>북마크 그룹 이름을 삭제하시겠습니까?</strong></p>
+	<p><strong>북마크를 삭제하시겠습니까?</strong></p>
 	</div>
 	
 	<%
 	request.setCharacterEncoding("UTF-8");
 	String id = request.getParameter("id"); 
-	String name = request.getParameter("bookmark_name");
-	String priority = request.getParameter("priority");
-	if (id != null && name != null && priority != null && request.getMethod().equalsIgnoreCase("POST")) {
-		BookmarkService.deleteLocationInfo(id);
+	String bookmarkName = request.getParameter("bookmark_name");
+	String wifiName = request.getParameter("wifi_name");
+	String regitDate = request.getParameter("regit_date");
+	if (id != null && request.getMethod().equalsIgnoreCase("POST")) {
+		BookmarkListService.deleteBookmarkListInfo(id);
 	%>
 	<script>
 		alert("북마크가 삭제되었습니다.");
-		window.location.href = "manage-bookmark.jsp";
+		window.location.href = "show-bookmark.jsp";
 	</script>
 	<%
 	}
 	%>
 
-	<form action="delete-bookmark.jsp" method="post" class="form_main">			
+	<form action="delete-bookmarklist.jsp" method="post" class="form_main">			
 	<table id="wifi_table" class="wifi_table">
 		<tbody>		
 			<colgroup>
@@ -49,25 +51,25 @@
 			<tr>
 				<th>북마크 이름</th>
 				<td>
-					<div class="input_item">
-						<label for="bookmark_name"></label> 
-	           			<input type="text" id="bookmark_name" name="bookmark_name" value="<%= request.getParameter("bookmark_name") %>">
-					</div>
+					<%= bookmarkName %>
 				</td>
 			</tr>
 			<tr>
-				<th>순서</th>
+				<th>와이파이명</th>
 				<td>
-					<div class="input_item">
-						<label for="priority"></label> 
-	           			<input type="text" id="priority" name="priority" value="<%= request.getParameter("priority") %>">
-					</div>
+					<%= wifiName %>
+				</td>
+			</tr>
+			<tr>
+				<th>등록일자</th>
+				<td>
+					<%= regitDate %>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
-					<a href="manage-bookmark.jsp" style="margin-right: 15px;">돌아가기</a>
-					<input type="hidden" name="id" value="<%= request.getParameter("id") %>">
+					<a href="show-bookmark.jsp" style="margin-right: 15px;">돌아가기</a>
+					<input type="hidden" name="id" value="<%= id %>">
 					<button type="submit">삭제</button>					
 				</td>
 			</tr>
