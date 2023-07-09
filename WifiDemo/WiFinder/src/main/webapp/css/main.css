@@ -1,7 +1,8 @@
-@charset "UTF-8";
 
 .top_elements {
 	text-align: center;	
+	padding: 15px 0;
+	
 }
 
 .form_main {
@@ -62,3 +63,5 @@
 	margin: 15px 0;
 
 }
+
+
