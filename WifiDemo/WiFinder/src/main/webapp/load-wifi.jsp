@@ -4,19 +4,15 @@
 <%@ page import="java.util.List" %>
 <%@page import="model.PublicWifiInfo"%>
 <%@page import="model.PublicWifiInfo.Row"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Open API 와이파이 정보 가져오기</title>
-<style type="text/css">
-.top_elements {
-	padding: 15px 0;
-	text-align: center;
-}
-</style>
+<link href="css/main.css" rel="stylesheet">
+<script src="js/find-location.js"></script>
+
 </head>
 
 <body>
@@ -27,6 +23,7 @@
 	int count = Api.getTotalCount();
 	int totalCount = count;
 	int batchSize = 1000;
+	
 	for (int start = 1; start <= totalCount; start += batchSize) {
 	    int end = Math.min(start + batchSize - 1, totalCount);
 	    
@@ -36,7 +33,6 @@
 	}
 	int maxId = WifiService.showCountWifiInfo();	
 	%>
-	
 		<div class="top_elements">
 		<h1>
 			<%= maxId %> 개의 WIFI 정보를 정상적으로 저장했습니다.
