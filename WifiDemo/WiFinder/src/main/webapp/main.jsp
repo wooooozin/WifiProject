@@ -20,6 +20,15 @@
 </head>
 
 <body>
+<div id="loadingArea" class="loading_area">
+	<div class="loading_inner">
+		<div class="box dot">
+			<span></span>
+			<span></span>
+			<span></span>	
+		</div>
+	</div>
+</div>
 	<h1>와이파이 정보 구하기</h1>
 	<%
 	request.setCharacterEncoding("UTF-8");
@@ -34,7 +43,7 @@
 	<div class="top_menu">
 		<a href="main.jsp">홈</a> <span>|</span> 
 		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
+		<a href="load-wifi.jsp" id="loadWifiLink">Open API 와이파이 정보 가져오기</a> <span>|</span>
 		<a href="show-bookmark.jsp">북마크 보기</a> <span>|</span>
 		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
@@ -51,7 +60,7 @@
 			</div>
 			<div class="btn_area">
 				<button type="button" onclick="getUserLocation()">내 위치 가져오기</button>
-				<button type="submit">근처 WIFI 정보보기</button>
+				<button type="submit" id="table_loading">근처 WIFI 정보보기</button>
 			</div>
 		</div>
 	</form>
@@ -80,13 +89,21 @@
 		</thead>
 
 		<tbody>
+			<tr id="loader" class="loading_tr">
+				<td colspan="17" class="loading_inner dot">
+					<div class="box dot">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</td>
+			</tr>
 			<%
 			if (WifiService.hasData()) {
 				if (lat == null && lnt == null) {
 			%>
-			<tr>
-				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해
-					주세요.</td>
+			<tr id="nodata" class="nodata">
+				<td colspan="17" style="text-align: center;">위치 정보를 입력한 후에 조회해 주세요.</td>
 			</tr>
 			<%
 			} else {
@@ -121,9 +138,9 @@
 				}
 			} else {
 			%>
-			<tr>
-				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를
-					가져온 후 조회해 주세요.🥲</td>
+			
+			<tr class="nodata">
+				<td colspan="17" style="text-align: center;">Open API 와이파이 정보를 가져온 후 조회해 주세요.🥲</td>
 			</tr>
 			<%
 			}
@@ -131,6 +148,13 @@
 
 		</tbody>
 	</table>
-
+	<script>
+		document.getElementById('loadWifiLink').addEventListener('click', function() {
+		    showLoading();
+		});
+		document.getElementById('table_loading').addEventListener('click', function() {
+		   tblLoading();
+		});
+	</script>
 </body>
 </html>

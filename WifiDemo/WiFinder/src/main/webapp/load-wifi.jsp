@@ -16,8 +16,6 @@
 </head>
 
 <body>
-
-	
 	<%
 	// 1000단위로 데이터 호출해 DB에 데이터 저장하기
 	int count = Api.getTotalCount();
@@ -33,7 +31,8 @@
 	}
 	int maxId = WifiService.showCountWifiInfo();	
 	%>
-		<div class="top_elements">
+
+	<div class="top_elements">
 		<h1>
 			<%= maxId %> 개의 WIFI 정보를 정상적으로 저장했습니다.
 		</h1>
@@ -41,6 +40,6 @@
 			<a href="main.jsp">홈으로 돌아가기</a>
 		</div>
 	</div>
-
 </body>
+
 </html>

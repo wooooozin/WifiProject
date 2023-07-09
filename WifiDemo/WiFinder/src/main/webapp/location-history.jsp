@@ -9,17 +9,27 @@
 <head>
 <meta charset="UTF-8">
 <title>위치 히스토리 목록</title>
-<link href="css/location-history.css" rel="stylesheet">
-<script src="js/location-history.js"></script>
+<link href="css/main.css" rel="stylesheet">
+<script src="js/find-location.js"></script>
 </head>
 
 <body>
+<div id="loadingArea" class="loading_area">
+	<div class="loading_inner">
+		<div class="box dot">
+			<span></span>
+			<span></span>
+			<span></span>	
+		</div>
+	</div>
+</div>
+
 	<h1>위치 히스토리 목록</h1>
 
 	<div class="location_top_buttons">
 		<a href="main.jsp">홈</a> <span>|</span> 
 		<a href="location-history.jsp">위치 히스토리 목록</a> <span>|</span> 
-		<a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a> <span>|</span> 
+		<a href="load-wifi.jsp" id="loadWifiLink">Open API 와이파이 정보 가져오기</a> <span>|</span>
 		<a href="show-bookmark.jsp">북마크 보기</a> <span>|</span>
 		<a href="manage-bookmark.jsp">북마크 그룹 관리</a>
 	</div>
@@ -40,7 +50,7 @@
 			if (!LocationSerivce.hasData()) {
 			%>
 			<tr>
-				<td colspan="5" style="text-align: center;">조회한 위치 정보가 없습니다.</td>
+				<td colspan="5" style="text-align: center;">조회한 위치 정보가 없어요. 😥</td>
 			</tr>
 			<%
 			} else {
@@ -78,5 +88,11 @@
             %>
         </tbody>
 	</table>
+	<script>
+		document.getElementById('loadWifiLink').addEventListener('click',
+				function() {
+					showLoading();
+				});
+	</script>
 </body>
 </html>

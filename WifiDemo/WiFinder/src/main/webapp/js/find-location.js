@@ -33,3 +33,28 @@ function handleLocationError(error) {
 			break;
 	}
 }
+
+function showLoading() {
+    let spinner = document.querySelector('#loadingArea');
+    spinner.style.display = "block";
+}
+
+function hideLoading() {
+    let spinner = document.querySelector('#loadingArea');
+    spinner.style.display = "none";
+}
+
+function tblLoading() {
+    const loader = document.querySelector('#loader');
+    const nodata = document.querySelector('#nodata');
+    loader.style.display = "table-row";
+    nodata.style.display = "none";
+}
+
+
+function confirmDelete(event) {
+	if (!confirm("정말로 삭제하시겠습니까?")) {
+		event.preventDefault();
+	}
+}
+
