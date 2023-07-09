@@ -53,7 +53,7 @@ public class Api {
 				Gson gson = new Gson();
 				String jsonResponse = response.toString();
 				PublicWifiInfo tbPublicWifiInfo = gson.fromJson(jsonResponse, PublicWifiInfo.class);
-				count = tbPublicWifiInfo.getTbPublicWifiInfo().getList_total_count();
+				return tbPublicWifiInfo.getTbPublicWifiInfo().getList_total_count();
 			} else {
 				System.out.println("HTTP 요청이 실패했습니다. 상태 코드: " + statusCode);
 			}
@@ -62,7 +62,7 @@ public class Api {
 		} finally {
 			httpClient.close();
 		}
-		return count;
+		return 0;
 	}
 	
 	public static PublicWifiInfo getWifiInfo(int start, int end) throws ClientProtocolException, IOException {

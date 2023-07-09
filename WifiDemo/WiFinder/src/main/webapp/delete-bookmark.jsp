@@ -29,7 +29,7 @@
 	String name = request.getParameter("bookmark_name");
 	String priority = request.getParameter("priority");
 	if (id != null && name != null && priority != null && request.getMethod().equalsIgnoreCase("POST")) {
-		BookmarkService.deleteLocationInfo(id);
+		BookmarkService.deleteBookmarkInfo(id);
 	%>
 	<script>
 		alert("북마크가 삭제되었습니다.");

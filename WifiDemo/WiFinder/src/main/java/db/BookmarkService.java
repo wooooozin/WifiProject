@@ -154,7 +154,7 @@ public class BookmarkService {
 		
 	}
 	
-	public static void deleteLocationInfo(String id) {
+	public static void deleteBookmarkInfo(String id) {
 		try {
 	        Class.forName("org.mariadb.jdbc.Driver");
 	    } catch (ClassNotFoundException e) {
