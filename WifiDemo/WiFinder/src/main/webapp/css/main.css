@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.top_elements {
+	text-align: center;	
+}
+
 .form_main {
 	margin: 15px 0;
 }

@@ -5,8 +5,7 @@
 <%@page import="model.Wifi"%>
 <%@ page import="java.util.List"%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="db.WifiService"%>
 <%@ page import="db.LocationSerivce"%>
 
@@ -28,7 +27,7 @@
 	String lnt = request.getParameter("lntField");
 	if (lat != null && lnt != null) {
 		LocationSerivce.insertLocationInfo(lat, lnt);
-		List<Wifi> wifiManageNumbers = WifiService.selectIdNumberInfo();	
+		List<Wifi> wifiManageNumbers = WifiService.selectIdNumberInfo();
 		WifiService.updateDistance(lat, lnt, wifiManageNumbers);
 	}
 	%>

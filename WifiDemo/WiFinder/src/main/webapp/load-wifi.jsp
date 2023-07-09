@@ -39,9 +39,7 @@
 	
 		<div class="top_elements">
 		<h1>
-			<%
-			out.write(maxId + "개의 WIFI 정보를 정상적으로 저장했습니다.");
-			%>
+			<%= maxId %> 개의 WIFI 정보를 정상적으로 저장했습니다.
 		</h1>
 		<div class="top_button">
 			<a href="main.jsp">홈으로 돌아가기</a>
